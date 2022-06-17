@@ -18,6 +18,7 @@ class FetchRecordZoneChangesOperation: Operation {
 	var errorBlock: ((CKRecordZone.ID, Error) -> Void)?
 	var recordChangedBlock: ((CKRecord) -> Void)?
 	var recordWithIDWasDeletedBlock: ((CKRecord.ID) -> Void)?
+    var tokenUpdatedBlock: (() -> Void)?
 	
     private let optionsByRecordZoneID: [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]
 	private let fetchQueue = OperationQueue()
@@ -74,11 +75,11 @@ class FetchRecordZoneChangesOperation: Operation {
 		fetchRecordZoneChanges.recordWithIDWasDeletedBlock = { recordID, _ in
 			self.recordWithIDWasDeletedBlock?(recordID)
 		}
-        /*
         fetchRecordZoneChanges.recordZoneChangeTokensUpdatedBlock = { zoneId, serverChangeToken, _ in
+            self.tokenUpdatedBlock?()
+            
             self.tokens.setToken(serverChangeToken, for: zoneId)
         }
-        */
 		fetchRecordZoneChanges.recordZoneFetchCompletionBlock = { zoneId, serverChangeToken, clientChangeTokenData, isMore, error in
             self.tokens.setToken(serverChangeToken, for: zoneId)
 			

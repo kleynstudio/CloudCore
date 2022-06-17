@@ -192,7 +192,7 @@ public class PullChangesOperation: PullOperation {
 			self.handle(recordZoneChangesError: error, in: zoneID, database: database, context: context)
 		}
         
-        recordZoneChangesOperation.completionBlock = {
+        let commitChanges = {
             self.processMissingReferences(context: context)
             
             context.performAndWait {
@@ -202,6 +202,14 @@ public class PullChangesOperation: PullOperation {
                     self.errorBlock?(error)
                 }
             }
+        }
+        
+        recordZoneChangesOperation.tokenUpdatedBlock = {
+            commitChanges()
+        }
+        
+        recordZoneChangesOperation.completionBlock = {
+            commitChanges()
         }
 		
 		queue.addOperation(recordZoneChangesOperation)
