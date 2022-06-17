@@ -54,7 +54,7 @@ NSPersistentCloudKitContainer provides native support for Core Data <-> CloudKit
 Apple very clearly states that NSPersistentCloudKitContainer is a foundation for future support of more advanced features. I'm still waiting to learn which first-party apps use it. #YMMV
 
 ## How it works?
-CloudCore is built using a "black box" architecture, so it works fairly invisibly for your application.  You just need to add several lines to your `AppDelegate` to enable it, as well as identify various aspects of your Core Data Model schema. Synchronization and error resolving is managed automatically.
+CloudCore is built using a "black box" architecture, so it works fairly invisibly for your application.  You add several lines to your `AppDelegate` to enable it, and identify various synchronziation aspects of your Core Data Model schema. Synchronization and error resolving is managed automatically.
 
 1. CloudCore stores *change tokens* from CloudKit, so only changed data is downloaded.
 2. When CloudCore is enabled (`CloudCore.enable`) it pulls changed data from CloudKit and subscribes to CloudKit push notifications about new changes.
