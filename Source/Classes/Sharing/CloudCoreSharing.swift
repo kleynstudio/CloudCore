@@ -64,9 +64,19 @@ extension CloudCoreSharing {
         if let shareData = shareRecordData {
             let (database, shareID) = shareDatabaseAndRecordID(from: shareData)
             
-            database.fetch(withRecordID: shareID) { record, error in
-                completion(record as? CKShare, error)
+            let fetchOp = CKFetchRecordsOperation(recordIDs: [shareID])
+            fetchOp.qualityOfService = .userInitiated
+            fetchOp.perRecordResultBlock = { recordID, result in
+                guard recordID == shareID else { return }
+                
+                switch result {
+                case .success(let record):
+                    completion(record as? CKShare, nil)
+                case .failure(let error):
+                    completion(nil, error)
+                }
             }
+            database.add(fetchOp)
         } else {
             completion(nil, nil)
         }
