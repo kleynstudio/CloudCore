@@ -46,7 +46,7 @@ class DetailViewController: UITableViewController {
             let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add(_:)))
             buttons.append(addButton)
             
-            let renameButton = UIBarButtonItem(title: "Rename", style: .plain, target: self, action: #selector(rename(_:)))
+            let renameButton = UIBarButtonItem(title: "Rename", style: .plain, target: self, action: #selector(changeName(_:)))
             buttons.append(renameButton)
         }
         let shareButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector((share(_:))))
@@ -67,7 +67,7 @@ class DetailViewController: UITableViewController {
         }
 	}
 	
-	@objc private func rename(_ sender: UIBarButtonItem) {
+	@objc private func changeName(_ sender: UIBarButtonItem) {
         let newTitle = ModelFactory.newCompanyName()
         persistentContainer.performBackgroundPushTask { (moc) in
             let organization = try? moc.existingObject(with: self.organizationID) as? Organization
