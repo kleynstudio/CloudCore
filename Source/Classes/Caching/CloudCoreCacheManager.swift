@@ -177,6 +177,8 @@ class CloudCoreCacheManager: NSObject {
         let container = container
         let context = processContext
         
+        var database = container.privateCloudDatabase
+        
         context.perform {
             guard let cacheable = try? context.existingObject(with: cacheableID) as? CloudCoreCacheable else { return }
             
@@ -187,7 +189,14 @@ class CloudCoreCacheManager: NSObject {
             
             if modifyOp == nil
             {
-                guard let record = try? cacheable.restoreRecordWithSystemFields(for: .private) else { return }
+                var record = try? cacheable.restoreRecordWithSystemFields(for: .public)
+                if record != nil {
+                    database = container.publicCloudDatabase
+                } else {
+                    record = try? cacheable.restoreRecordWithSystemFields(for: .private)
+                }
+                
+                guard let record else { return }
                 
                 record[cacheable.assetFieldName] = CKAsset(fileURL: cacheable.url)
                 record["remoteStatusRaw"] = RemoteStatus.available.rawValue
@@ -227,7 +236,7 @@ class CloudCoreCacheManager: NSObject {
             modifyOp.modifyRecordsCompletionBlock = { records, recordIDs, error in }
             modifyOp.longLivedOperationWasPersistedBlock = { }
             if !modifyOp.isExecuting {
-                container.privateCloudDatabase.add(modifyOp)
+                database.add(modifyOp)
             }
             
             if cacheable.cacheState != .uploading {
@@ -248,6 +257,8 @@ class CloudCoreCacheManager: NSObject {
         let container = container
         let context = processContext
         
+        var database = container.privateCloudDatabase
+        
         context.perform {
             guard let cacheable = try? context.existingObject(with: cacheableID) as? CloudCoreCacheable else { return }
             
@@ -258,8 +269,15 @@ class CloudCoreCacheManager: NSObject {
             
             if fetchOp == nil
             {
-                guard let record = try? cacheable.restoreRecordWithSystemFields(for: .private) else { return }
-                                
+                var record = try? cacheable.restoreRecordWithSystemFields(for: .public)
+                if record != nil {
+                    database = container.publicCloudDatabase
+                } else {
+                    record = try? cacheable.restoreRecordWithSystemFields(for: .private)
+                }
+                
+                guard let record else { return }
+                
                 fetchOp = CKFetchRecordsOperation(recordIDs: [record.recordID])
                 fetchOp.configuration = self.longLivedConfiguration(qos: .userInitiated)
                 fetchOp.desiredKeys = [cacheable.assetFieldName]
@@ -301,7 +319,7 @@ class CloudCoreCacheManager: NSObject {
             }
             fetchOp.longLivedOperationWasPersistedBlock = { }
             if !fetchOp.isExecuting {
-                container.privateCloudDatabase.add(fetchOp)
+                database.add(fetchOp)
             }
             
             if cacheable.cacheState != .downloading {
