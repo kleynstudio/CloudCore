@@ -14,8 +14,6 @@ public class PullRecordOperation: PullOperation {
     let rootRecordID: CKRecord.ID
     let database: CKDatabase
     
-    var fetchedRecordIDs: [CKRecord.ID] = []
-    
     public init(rootRecordID: CKRecord.ID, database: CKDatabase, persistentContainer: NSPersistentContainer) {
         self.rootRecordID = rootRecordID
         self.database = database
@@ -43,7 +41,7 @@ public class PullRecordOperation: PullOperation {
         let backgroundContext = persistentContainer.newBackgroundContext()
         backgroundContext.name = CloudCore.config.pullContextName
         
-        addFetchRecordsOp(recordIDs: [rootRecordID], backgroundContext: backgroundContext)
+        addFetchRecordsOp(recordIDs: [rootRecordID], database: database, backgroundContext: backgroundContext)
         
         self.queue.waitUntilAllOperationsAreFinished()
         
@@ -59,41 +57,5 @@ public class PullRecordOperation: PullOperation {
                 
         CloudCore.delegate?.didSyncFromCloud()
     }
-    
-    private func addFetchRecordsOp(recordIDs: [CKRecord.ID], backgroundContext: NSManagedObjectContext) {
-        let fetchRecords = CKFetchRecordsOperation(recordIDs: recordIDs)
-        fetchRecords.database = database
-        fetchRecords.qualityOfService = .userInitiated
-        fetchRecords.desiredKeys = persistentContainer.managedObjectModel.desiredKeys
-        fetchRecords.perRecordCompletionBlock = { record, recordID, error in
-            if let record = record {
-                self.fetchedRecordIDs.append(recordID!)
-                
-                self.addConvertRecordOperation(record: record, context: backgroundContext)
-                
-                var childIDs: [CKRecord.ID] = []
-                record.allKeys().forEach { key in
-                    if let reference = record[key] as? CKRecord.Reference, !self.fetchedRecordIDs.contains(reference.recordID) {
-                        childIDs.append(reference.recordID)
-                    }
-                    if let array = record[key] as? [CKRecord.Reference] {
-                        array.forEach { reference in
-                            if !self.fetchedRecordIDs.contains(reference.recordID) {
-                                childIDs.append(reference.recordID)
-                            }
-                        }
-                    }
-                }
-                
-                if !childIDs.isEmpty {
-                    self.addFetchRecordsOp(recordIDs: childIDs, backgroundContext: backgroundContext)
-                }
-            }
-        }
-        let finished = BlockOperation { }
-        finished.addDependency(fetchRecords)
-        database.add(fetchRecords)
-        self.queue.addOperation(finished)
-    }
-    
+        
 }

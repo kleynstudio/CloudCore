@@ -17,6 +17,7 @@ public class PullOperation: Operation {
     
     internal let queue = OperationQueue()
     
+    internal var fetchedRecordIDs: [CKRecord.ID] = []
     internal var objectsWithMissingReferences = [MissingReferences]()
     
     public init(persistentContainer: NSPersistentContainer) {
@@ -28,6 +29,42 @@ public class PullOperation: Operation {
         
         queue.name = "PullQueue"
         queue.maxConcurrentOperationCount = 1
+    }
+    
+    internal func addFetchRecordsOp(recordIDs: [CKRecord.ID], database: CKDatabase, backgroundContext: NSManagedObjectContext) {
+        let fetchRecords = CKFetchRecordsOperation(recordIDs: recordIDs)
+        fetchRecords.database = database
+        fetchRecords.qualityOfService = .userInitiated
+        fetchRecords.desiredKeys = persistentContainer.managedObjectModel.desiredKeys
+        fetchRecords.perRecordCompletionBlock = { record, recordID, error in
+            if let record = record {
+                self.fetchedRecordIDs.append(recordID!)
+                
+                self.addConvertRecordOperation(record: record, context: backgroundContext)
+                
+                var childIDs: [CKRecord.ID] = []
+                record.allKeys().forEach { key in
+                    if let reference = record[key] as? CKRecord.Reference, !self.fetchedRecordIDs.contains(reference.recordID) {
+                        childIDs.append(reference.recordID)
+                    }
+                    if let array = record[key] as? [CKRecord.Reference] {
+                        array.forEach { reference in
+                            if !self.fetchedRecordIDs.contains(reference.recordID) {
+                                childIDs.append(reference.recordID)
+                            }
+                        }
+                    }
+                }
+                
+                if !childIDs.isEmpty {
+                    self.addFetchRecordsOp(recordIDs: childIDs, database: database, backgroundContext: backgroundContext)
+                }
+            }
+        }
+        let finished = BlockOperation { }
+        finished.addDependency(fetchRecords)
+        database.add(fetchRecords)
+        self.queue.addOperation(finished)
     }
     
     internal func addConvertRecordOperation(record: CKRecord, context: NSManagedObjectContext) {

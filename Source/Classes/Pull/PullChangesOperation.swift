@@ -79,21 +79,7 @@ public class PullChangesOperation: PullOperation {
                 }
                 fetchNotificationChanges.fetchNotificationChangesCompletionBlock = { changeToken, error in
                     let allChangedRecordIDs = changedRecordIDs.allObjects as! [CKRecord.ID]
-                    let fetchRecords = CKFetchRecordsOperation(recordIDs: allChangedRecordIDs)
-                    fetchRecords.database = CloudCore.config.container.publicCloudDatabase
-                    fetchRecords.qualityOfService = .userInitiated
-                    fetchRecords.perRecordCompletionBlock = { record, recordID, error in
-                        if error == nil {
-                            self.addConvertRecordOperation(record: record!, context: backgroundContext)
-                        }
-                    }
-                    fetchRecords.fetchRecordsCompletionBlock = { _, error in
-                        self.processMissingReferences(context: backgroundContext)
-                    }
-                    let finished = BlockOperation { }
-                    finished.addDependency(fetchRecords)
-                    database.add(fetchRecords)
-                    self.queue.addOperation(finished)
+                    self.addFetchRecordsOp(recordIDs: allChangedRecordIDs, database: database, backgroundContext: backgroundContext)
                     
                     let allDeletedRecordIDs = deletedRecordIDs.allObjects as! [CKRecord.ID]
                     for recordID in allDeletedRecordIDs {
@@ -149,6 +135,8 @@ public class PullChangesOperation: PullOperation {
         }
         
 		queue.waitUntilAllOperationsAreFinished()
+        
+        processMissingReferences(context: backgroundContext)
         
         backgroundContext.performAndWait {
             do {
