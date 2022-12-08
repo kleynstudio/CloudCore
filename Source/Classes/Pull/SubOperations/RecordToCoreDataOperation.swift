@@ -63,6 +63,8 @@ public class RecordToCoreDataOperation: AsynchronousOperation {
 	private func setManagedObject(in context: NSManagedObjectContext) throws {
 		let entityName = record.recordType
 		
+        guard entityName != "cloudkit.share" else { return }
+        
 		guard let entity = NSEntityDescription.entity(forEntityName: entityName, in: context) else {
 			throw CloudCoreError.coreData("Unable to find entity specified in CKRecord: " + entityName)
 		}
