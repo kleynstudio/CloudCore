@@ -75,7 +75,7 @@ extension NSManagedObject {
     
     var sharingOwnerName: String {
         get {
-            if let parentAttributeName = parentAttributeName,
+            if let parentAttributeName,
                 let parent: NSManagedObject = value(forKey: parentAttributeName) as? NSManagedObject,
                 let serviceAttributes = parent.entity.serviceAttributeNames,
                 let parentOwnerName: String = parent.value(forKey: serviceAttributes.ownerName) as? String

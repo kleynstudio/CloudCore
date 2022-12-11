@@ -83,7 +83,7 @@ class FetchRecordZoneChangesOperation: Operation {
 		fetchRecordZoneChanges.recordZoneFetchCompletionBlock = { zoneId, serverChangeToken, clientChangeTokenData, isMore, error in
             self.tokens.setToken(serverChangeToken, for: zoneId)
 			
-			if let error = error {
+			if let error {
 				self.errorBlock?(zoneId, error)
 			}
 			

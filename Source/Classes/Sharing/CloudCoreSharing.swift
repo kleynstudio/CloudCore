@@ -88,7 +88,7 @@ extension CloudCoreSharing {
         let type = sharingType as CKRecordValue?
         
         fetchExistingShareRecord { share, error in
-            if let share = share {
+            if let share {
                 completion(share, nil)
             } else {
                 let newShare = CKShare(rootRecord: aRecord)

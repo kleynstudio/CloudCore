@@ -31,12 +31,12 @@ class FetchPublicSubscriptionsOperation: AsynchronousOperation {
                 self.state = .finished
             }
             
-            if let error = error {
+            if let error {
                 self.errorBlock?(error)
                 return
             }
             
-            guard let subscriptions = subscriptions else {
+            guard let subscriptions else {
                 self.fetchCompletionBlock?([CKSubscription]())
                 return
             }

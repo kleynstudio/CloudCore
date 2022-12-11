@@ -53,7 +53,7 @@ class PushOperationQueue: OperationQueue {
         modifyRecords.isAtomic = true
         
 		modifyRecords.perRecordCompletionBlock = { record, error in
-			if let error = error {
+			if let error {
 				self.errorBlock?(error)
 			} else {
 				self.removeCachedAssets(for: record)
@@ -61,7 +61,7 @@ class PushOperationQueue: OperationQueue {
 		}
 		
 		modifyRecords.modifyRecordsCompletionBlock = { _, _, error in
-			if let error = error {
+			if let error {
 				self.errorBlock?(error)
 			}
 		}

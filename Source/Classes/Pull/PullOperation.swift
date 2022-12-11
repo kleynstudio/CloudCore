@@ -37,7 +37,7 @@ public class PullOperation: Operation {
         fetchRecords.qualityOfService = .userInitiated
         fetchRecords.desiredKeys = persistentContainer.managedObjectModel.desiredKeys
         fetchRecords.perRecordCompletionBlock = { record, recordID, error in
-            if let record = record {
+            if let record {
                 self.fetchedRecordIDs.append(recordID!)
                 
                 self.addConvertRecordOperation(record: record, context: backgroundContext)
@@ -99,7 +99,7 @@ public class PullOperation: Operation {
                             do {
                                 let foundObject = try context.fetch(fetchRequest).first as? NSManagedObject
                                 
-                                if let foundObject = foundObject {
+                                if let foundObject {
                                     if relationship.isToMany {
                                         let set = object.value(forKey: attributeName) as? NSMutableSet ?? NSMutableSet()
                                         set.add(foundObject)

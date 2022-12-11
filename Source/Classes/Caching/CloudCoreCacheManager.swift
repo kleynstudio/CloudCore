@@ -144,7 +144,7 @@ class CloudCoreCacheManager: NSObject {
         
         let semaphore = DispatchSemaphore(value: 0)
         container.fetchLongLivedOperation(withID: operationID) { operation, error in
-            if let error = error {
+            if let error {
                 print("Error fetching operation: \(operationID)\n\(error)")
                 // Handle error
                 // return
@@ -223,7 +223,7 @@ class CloudCoreCacheManager: NSObject {
                     cacheable.lastErrorMessage = error?.localizedDescription
                 }
                 
-                if let error = error {
+                if let error {
                     CloudCore.delegate?.error(error: error, module: .cacheToCloud)
                     
                     if let cloudError = error as? CKError,
@@ -307,7 +307,7 @@ class CloudCoreCacheManager: NSObject {
                     cacheable.lastErrorMessage = error?.localizedDescription
                 }
                 
-                if let error = error {
+                if let error {
                     CloudCore.delegate?.error(error: error, module: .cacheFromCloud)
                     
                     if let cloudError = error as? CKError,

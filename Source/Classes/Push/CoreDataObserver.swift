@@ -339,7 +339,7 @@ class CoreDataObserver {
 				self.delegate?.error(error: $0, module: .some(.pushToCloud))
 				self.pushOperationQueue.cancelAllOperations()
 			}
-            if let deleteZoneOperation = deleteZoneOperation {
+            if let deleteZoneOperation {
                 createZoneOperation.addDependency(deleteZoneOperation)
             }
             resetZoneOperations.append(createZoneOperation)
