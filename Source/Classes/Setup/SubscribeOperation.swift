@@ -66,14 +66,14 @@ class SubscribeOperation: AsynchronousOperation {
 
 		let modifySubscriptions = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
         modifySubscriptions.database = database
-		modifySubscriptions.modifySubscriptionsCompletionBlock = {
-			if let error = $2 {
-				// Cancellation is not an error
-				if case CKError.operationCancelled = error { return }
-				
-				self.errorBlock?(error)
-			}
-		}
+        modifySubscriptions.modifySubscriptionsResultBlock = { result in
+            if case let .failure(error) = result {
+                // Cancellation is not an error
+                if case CKError.operationCancelled = error { return }
+                
+                self.errorBlock?(error)
+            }
+        }
 		
         modifySubscriptions.qualityOfService = .userInitiated
 		
@@ -83,12 +83,12 @@ class SubscribeOperation: AsynchronousOperation {
 	private func makeFetchSubscriptionOperation(for database: CKDatabase, searchForSubscriptionID subscriptionID: String, operationToCancelIfSubcriptionExists operationToCancel: CKModifySubscriptionsOperation) -> CKFetchSubscriptionsOperation {
 		let fetchSubscriptions = CKFetchSubscriptionsOperation(subscriptionIDs: [subscriptionID])
 		fetchSubscriptions.database = database
-		fetchSubscriptions.fetchSubscriptionCompletionBlock = { subscriptions, error in
-			// If no errors = subscription is found and we don't need to subscribe again
-			if error == nil {
-				operationToCancel.cancel()
-			}
-		}
+        fetchSubscriptions.fetchSubscriptionsResultBlock = { result in
+            // If no errors then subscription is found and we don't need to subscribe again
+            if case .success() = result {
+                operationToCancel.cancel()
+            }
+        }
         fetchSubscriptions.qualityOfService = .userInitiated
         
 		return fetchSubscriptions

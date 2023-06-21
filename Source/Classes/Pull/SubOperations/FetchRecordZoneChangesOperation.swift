@@ -69,9 +69,11 @@ class FetchRecordZoneChangesOperation: Operation {
 		// Init Fetch Operation
 		let fetchRecordZoneChanges = CKFetchRecordZoneChangesOperation(recordZoneIDs: recordZoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
         
-		fetchRecordZoneChanges.recordChangedBlock = {
-			self.recordChangedBlock?($0)
-		}
+        fetchRecordZoneChanges.recordWasChangedBlock = { recordID, result in
+            if case let .success(record) = result {
+                self.recordChangedBlock?(record)
+            }
+        }
 		fetchRecordZoneChanges.recordWithIDWasDeletedBlock = { recordID, _ in
 			self.recordWithIDWasDeletedBlock?(recordID)
 		}
@@ -80,21 +82,21 @@ class FetchRecordZoneChangesOperation: Operation {
             
             self.tokens.setToken(serverChangeToken, for: zoneId)
         }
-		fetchRecordZoneChanges.recordZoneFetchCompletionBlock = { zoneId, serverChangeToken, clientChangeTokenData, isMore, error in
-            self.tokens.setToken(serverChangeToken, for: zoneId)
-			
-			if let error {
-				self.errorBlock?(zoneId, error)
-			}
-			
-			if isMore {
-				let moreOperation = self.makeFetchOperation(optionsByRecordZoneID: optionsByRecordZoneID)
-                let finish = BlockOperation { }
-                finish.addDependency(moreOperation)
-                self.database.add(moreOperation)
-				self.fetchQueue.addOperation(finish)
-			}
-		}
+        fetchRecordZoneChanges.recordZoneFetchResultBlock = { zoneId, result in
+            switch result {
+            case .success(let (serverChangeToken, _, moreComing)):
+                self.tokens.setToken(serverChangeToken, for: zoneId)
+                if moreComing {
+                    let moreOperation = self.makeFetchOperation(optionsByRecordZoneID: optionsByRecordZoneID)
+                    let finish = BlockOperation { }
+                    finish.addDependency(moreOperation)
+                    self.database.add(moreOperation)
+                    self.fetchQueue.addOperation(finish)
+                }
+            case .failure(let error):
+                self.errorBlock?(zoneId, error)
+            }
+        }
 		
         fetchRecordZoneChanges.database = self.database
         fetchRecordZoneChanges.qualityOfService = .userInitiated

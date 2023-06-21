@@ -26,11 +26,10 @@ class DeleteCloudCoreZoneOperation: AsynchronousOperation {
         let cloudCoreZone = CKRecordZone(zoneName: CloudCore.config.zoneName)
         let recordZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: [cloudCoreZone.zoneID])
         recordZoneOperation.qualityOfService = .userInitiated
-        recordZoneOperation.modifyRecordZonesCompletionBlock = {
-            if let error = $2 {
+        recordZoneOperation.modifyRecordZonesResultBlock = { result in
+            if case let .failure(error) = result {
                 self.errorBlock?(error)
             }
-            
             self.state = .finished
         }
         

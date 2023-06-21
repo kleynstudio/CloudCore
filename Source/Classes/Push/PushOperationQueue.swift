@@ -52,19 +52,27 @@ class PushOperationQueue: OperationQueue {
         modifyRecords.qualityOfService = .userInitiated
         modifyRecords.isAtomic = true
         
-		modifyRecords.perRecordCompletionBlock = { record, error in
-			if let error {
-				self.errorBlock?(error)
-			} else {
-				self.removeCachedAssets(for: record)
-			}
-		}
-		
-		modifyRecords.modifyRecordsCompletionBlock = { _, _, error in
-			if let error {
-				self.errorBlock?(error)
-			}
-		}
+        modifyRecords.perRecordSaveBlock = { recordID, result in
+            if case let .failure(error) = result {
+                self.errorBlock?(error)
+            }
+        }
+        modifyRecords.perRecordDeleteBlock = { recordID, result in
+            switch result {
+            case .success():
+                // TODO: need to call this?
+//                self.removeCachedAssets(for: record)
+                break
+            case .failure(let error):
+                self.errorBlock?(error)
+            }
+            
+        }
+        modifyRecords.modifyRecordsResultBlock = { result in
+            if case let .failure(error) = result {
+                self.errorBlock?(error)
+            }
+        }
                 
         let finish = BlockOperation { }
         finish.addDependency(modifyRecords)

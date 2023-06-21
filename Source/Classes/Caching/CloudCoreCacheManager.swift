@@ -215,15 +215,14 @@ class CloudCoreCacheManager: NSObject {
                     }
                 }
             }
-            modifyOp.perRecordCompletionBlock = { record, error in
-                self.update([cacheableID]) { cacheable in
-                    cacheable.uploadProgress = 0
-                    cacheable.cacheState = (error == nil) ? .cached : .local
-                    cacheable.remoteStatus = (error == nil) ? .available : .pending
-                    cacheable.lastErrorMessage = error?.localizedDescription
-                }
+            modifyOp.perRecordSaveBlock = { recordID, result in
+                var success = true
+                var errorMessage: String?
                 
-                if let error {
+                if case let .failure(error) = result {
+                    success = false
+                    errorMessage = error.localizedDescription
+                    
                     CloudCore.delegate?.error(error: error, module: .cacheToCloud)
                     
                     if let cloudError = error as? CKError,
@@ -232,8 +231,15 @@ class CloudCoreCacheManager: NSObject {
                         CloudCore.pauseUntil = Date(timeIntervalSinceNow: number.doubleValue)
                     }
                 }
+                
+                self.update([cacheableID]) { cacheable in
+                    cacheable.uploadProgress = 0
+                    cacheable.cacheState = success ? .cached : .local
+                    cacheable.remoteStatus = success ? .available : .pending
+                    cacheable.lastErrorMessage = errorMessage
+                }
             }
-            modifyOp.modifyRecordsCompletionBlock = { records, recordIDs, error in }
+            modifyOp.modifyRecordsResultBlock = { result in }
             modifyOp.longLivedOperationWasPersistedBlock = { }
             if !modifyOp.isExecuting {
                 database.add(modifyOp)
@@ -292,7 +298,28 @@ class CloudCoreCacheManager: NSObject {
                     }
                 }
             }
-            fetchOp.perRecordCompletionBlock = { record, recordID, error in
+            fetchOp.perRecordResultBlock = { recordID, result in
+                var record: CKRecord?
+                var success = true
+                var errorMessage: String?
+                
+                switch result
+                {
+                case .success(let fetchedRecord):
+                    record = fetchedRecord
+                case .failure(let error):
+                    success = false
+                    errorMessage = error.localizedDescription
+                    
+                    CloudCore.delegate?.error(error: error, module: .cacheToCloud)
+                    
+                    if let cloudError = error as? CKError,
+                       let number = cloudError.userInfo[CKErrorRetryAfterKey] as? NSNumber
+                    {
+                        CloudCore.pauseUntil = Date(timeIntervalSinceNow: number.doubleValue)
+                    }
+                }
+
                 self.update([cacheableID]) { cacheable in
                     if let asset = record?[cacheable.assetFieldName] as? CKAsset,
                        let downloadURL = asset.fileURL
@@ -303,19 +330,10 @@ class CloudCoreCacheManager: NSObject {
                     }
                     
                     cacheable.downloadProgress = 0
-                    cacheable.cacheState = (error == nil) ? .cached : .remote
-                    cacheable.lastErrorMessage = error?.localizedDescription
+                    cacheable.cacheState = success ? .cached : .remote
+                    cacheable.lastErrorMessage = errorMessage
                 }
-                
-                if let error {
-                    CloudCore.delegate?.error(error: error, module: .cacheFromCloud)
-                    
-                    if let cloudError = error as? CKError,
-                       let number = cloudError.userInfo[CKErrorRetryAfterKey] as? NSNumber
-                    {
-                        CloudCore.pauseUntil = Date(timeIntervalSinceNow: number.doubleValue)
-                    }
-                }
+
             }
             fetchOp.longLivedOperationWasPersistedBlock = { }
             if !fetchOp.isExecuting {

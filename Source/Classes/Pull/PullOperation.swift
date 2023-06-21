@@ -36,9 +36,9 @@ public class PullOperation: Operation {
         fetchRecords.database = database
         fetchRecords.qualityOfService = .userInitiated
         fetchRecords.desiredKeys = persistentContainer.managedObjectModel.desiredKeys
-        fetchRecords.perRecordCompletionBlock = { record, recordID, error in
-            if let record {
-                self.fetchedRecordIDs.append(recordID!)
+        fetchRecords.perRecordResultBlock = { recordID, result in
+            if case let .success(record) = result {
+                self.fetchedRecordIDs.append(recordID)
                 
                 self.addConvertRecordOperation(record: record, context: backgroundContext)
                 

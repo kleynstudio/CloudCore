@@ -27,13 +27,14 @@ class CreateCloudCoreZoneOperation: AsynchronousOperation {
 		let cloudCoreZone = CKRecordZone(zoneName: CloudCore.config.zoneName)
 		let recordZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [cloudCoreZone], recordZoneIDsToDelete: nil)
         recordZoneOperation.qualityOfService = .userInitiated
-		recordZoneOperation.modifyRecordZonesCompletionBlock = {
-			if let error = $2 {
-				self.errorBlock?(error)
-			}
-			
-			self.state = .finished
-		}
+        recordZoneOperation.modifyRecordZonesResultBlock = { result in
+            if case let .failure(error) = result {
+                self.errorBlock?(error)
+            }
+            
+            self.state = .finished
+        }
+        
 		
 		CloudCore.config.container.privateCloudDatabase.add(recordZoneOperation)
 		self.createZoneOperation = recordZoneOperation

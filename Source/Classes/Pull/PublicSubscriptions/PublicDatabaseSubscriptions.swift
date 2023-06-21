@@ -34,12 +34,14 @@ public class PublicDatabaseSubscriptions {
         querySubscription.notificationInfo = notificationInfo
         
         let modifySubscriptions = CKModifySubscriptionsOperation(subscriptionsToSave: [querySubscription], subscriptionIDsToDelete: [])
-        modifySubscriptions.modifySubscriptionsCompletionBlock = { _, _, error in
-            if error == nil {
+        modifySubscriptions.modifySubscriptionsResultBlock = { result in
+            switch result {
+            case .success():
                 self.cachedIDs.append(querySubscription.subscriptionID)
+                completion?(querySubscription.subscriptionID, nil)
+            case .failure(let error):
+                completion?(querySubscription.subscriptionID, error)
             }
-
-            completion?(querySubscription.subscriptionID, error)
         }
         
         let config = CKOperation.Configuration()
@@ -56,14 +58,16 @@ public class PublicDatabaseSubscriptions {
     //   - subscriptionID: id of subscription to remove
     static public func unsubscribe(subscriptionID: String, completion: ((Error?) -> Void)?) {
         let modifySubscription = CKModifySubscriptionsOperation(subscriptionsToSave: [], subscriptionIDsToDelete: [subscriptionID])
-        modifySubscription.modifySubscriptionsCompletionBlock = { _, _, error in
-            if error == nil {
+        modifySubscription.modifySubscriptionsResultBlock = { result in
+            switch result {
+            case .success():
                 if let index = self.cachedIDs.firstIndex(of: subscriptionID) {
                     self.cachedIDs.remove(at: index)
                 }
+                completion?(nil)
+            case .failure(let error):
+                completion?(error)
             }
-            
-            completion?(error)
         }
         
         let config = CKOperation.Configuration()

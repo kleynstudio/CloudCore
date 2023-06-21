@@ -105,17 +105,23 @@ public class PullChangesOperation: PullOperation {
                 fetchDatabaseChanges.recordZoneWithIDWasDeletedBlock = { recordZoneID in
                     deletedZoneIDs.append(recordZoneID)
                 }
-                fetchDatabaseChanges.fetchDatabaseChangesCompletionBlock = { changeToken, moreComing, error in
-                    // TODO: error handling?
-                    
-                    if changedZoneIDs.count > 0 {
-                        self.addRecordZoneChangesOperation(recordZoneIDs: changedZoneIDs, database: database, context: backgroundContext)
+                fetchDatabaseChanges.fetchDatabaseChangesResultBlock = { result in
+                    switch result {
+                    case .success(let (changeToken, moreComing)):
+                        if changedZoneIDs.count > 0 {
+                            self.addRecordZoneChangesOperation(recordZoneIDs: changedZoneIDs, database: database, context: backgroundContext)
+                        }
+                        if deletedZoneIDs.count > 0 {
+                            self.deleteRecordsFromDeletedZones(recordZoneIDs: deletedZoneIDs)
+                        }
+                        
+                        self.tokens.setToken(changeToken, for: database.databaseScope)
+                        
+                        // TODO: handle moreComing
+                    case .failure(let error):
+                        // TODO: error handling?
+                        break
                     }
-                    if deletedZoneIDs.count > 0 {
-                        self.deleteRecordsFromDeletedZones(recordZoneIDs: deletedZoneIDs)
-                    }
-                    
-                    self.tokens.setToken(changeToken, for: database.databaseScope)
                 }
                 /*
                  To improve performance overall, and on watchOS in particular
