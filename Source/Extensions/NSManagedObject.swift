@@ -99,10 +99,14 @@ extension NSManagedObject {
 
     var updatedPropertyNames: [String]? {
         get {
-            return objc_getAssociatedObject(self, &NSManagedObject.updatedPropertyNamesKey) as? [String]
+            withUnsafePointer(to: NSManagedObject.updatedPropertyNamesKey) { unsafePointer in
+                return objc_getAssociatedObject(self, unsafePointer) as? [String]
+            }
         }
         set {
-            objc_setAssociatedObject(self, &NSManagedObject.updatedPropertyNamesKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            withUnsafePointer(to: NSManagedObject.updatedPropertyNamesKey) { unsafePointer in
+                objc_setAssociatedObject(self, unsafePointer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
         }
     }
 
