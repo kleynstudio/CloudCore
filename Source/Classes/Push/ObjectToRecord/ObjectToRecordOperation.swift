@@ -88,10 +88,11 @@ class ObjectToRecordOperation: Operation {
 				let references = try relationship.makeRecordValue()
 				record.setValue(references, forKey: attributeName)
                 
-                if let parentRef = references as? CKRecord.Reference,
-                    parentRef.recordID.zoneID.ownerName == managedObject.sharingOwnerName,
-                    let parentAttributeName = managedObject.parentAttributeName,
-                    parentAttributeName == attributeName
+                if scope != .public,
+                   let parentRef = references as? CKRecord.Reference,
+                   parentRef.recordID.zoneID.ownerName == managedObject.sharingOwnerName,
+                   let parentAttributeName = managedObject.parentAttributeName,
+                   parentAttributeName == attributeName
                 {
                     record.setParent(parentRef.recordID)
                 }
