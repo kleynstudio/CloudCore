@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "CloudCore"
   s.summary          = "Framework that enables synchronization between CloudKit and Core Data."
-  s.version          = "5.1.0"
+  s.version          = "6.0.0"
   s.homepage         = "https://github.com/deeje/CloudCore"
   s.license          = 'MIT'
   s.author           = { "deeje" => "deeje@mac.com", "Vasily Ulianov" => "vasily@me.com" }
@@ -10,10 +10,10 @@ Pod::Spec.new do |s|
     :tag => s.version.to_s
   }
 
-  s.ios.deployment_target = '13.0'
-  s.osx.deployment_target = '11.0'
-  s.tvos.deployment_target = '12.0'
-  s.watchos.deployment_target = '6.0'
+  s.ios.deployment_target = '15.0'
+  s.osx.deployment_target = '12.0'
+  s.tvos.deployment_target = '15.0'
+  s.watchos.deployment_target = '8.0'
 
   s.source_files = 'Source/**/*.swift'
 
@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.tvos.frameworks = 'Foundation', 'CloudKit', 'CoreData'
   s.watchos.frameworks = 'Foundation', 'CloudKit', 'CoreData'
 
-  s.swift_versions = [5.1]
+  s.swift_versions = [5.4]
 end
