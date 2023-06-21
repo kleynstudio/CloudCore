@@ -30,11 +30,15 @@ extension UIViewController {
                     
                 case .couldNotDetermine:
                     title = "iCloud Unavailable"
-                    message = "Could not determine the status of your iCloud account"
+                    message = "Could not determine the status of your iCloud account."
                     
                 case .restricted:
                     title = "iCloud Restricted"
-                    message = "You'll need permissions changed on your iCloud account"
+                    message = "You'll need permissions changed on your iCloud account."
+                    
+                case .temporarilyUnavailable:
+                    title = "iCloud Unavailable"
+                    message = "Try again later."
                     
                 @unknown default:
                     break
