@@ -18,7 +18,7 @@ public protocol CloudCoreSharing: CloudKitSharing, CloudCoreType {
     var shareRecordData: Data? { get set }
     
     func fetchExistingShareRecord(completion: @escaping ((CKShare?, Error?) -> Void))
-    func fetchShareRecord(completion: @escaping ((CKShare?, Error?) -> Void))
+    func fetchShareRecord(in persistentContainer: NSPersistentContainer, completion: @escaping ((CKShare?, Error?) -> Void))
     func fetchEditablePermissions(completion: @escaping FetchedEditablePermissionsCompletionBlock)
     func setShareRecord(share: CKShare?, in persistentContainer: NSPersistentContainer)
     func stopSharing(in persistentContainer: NSPersistentContainer, completion: @escaping StopSharingCompletionBlock)
@@ -82,7 +82,7 @@ extension CloudCoreSharing {
         }
     }
     
-    public func fetchShareRecord(completion: @escaping ((CKShare?, Error?) -> Void)) {
+    public func fetchShareRecord(in persistentContainer: NSPersistentContainer, completion: @escaping ((CKShare?, Error?) -> Void)) {
         let aRecord = try! self.restoreRecordWithSystemFields(for: .private)!
         let title = sharingTitle as CKRecordValue?
         let type = sharingType as CKRecordValue?
@@ -95,7 +95,22 @@ extension CloudCoreSharing {
                 newShare[CKShare.SystemFieldKey.title] = title
                 newShare[CKShare.SystemFieldKey.shareType] = type
                 
-                completion(newShare, nil)
+                let modifyOp = CKModifyRecordsOperation(recordsToSave: [aRecord, newShare], recordIDsToDelete: nil)
+                modifyOp.savePolicy = .changedKeys
+                modifyOp.qualityOfService = .userInitiated
+                modifyOp.perRecordSaveBlock = { recordID, result in
+                    switch result {
+                    case .success(let record):
+                        if let share = record as? CKShare {
+                            self.setShareRecord(share: share, in: persistentContainer)
+                            
+                            completion(share, nil)
+                        }
+                    case .failure(let error):
+                        completion(nil, error)
+                    }
+                }
+                CloudCore.config.container.privateCloudDatabase.add(modifyOp)
             }
         }
     }

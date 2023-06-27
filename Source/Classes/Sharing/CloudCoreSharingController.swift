@@ -27,44 +27,26 @@ public class CloudCoreSharingController: NSObject, UICloudSharingControllerDeleg
         self.object = object
     }
     
+    public func createSharingController(share: CKShare,
+                                        permissions: UICloudSharingController.PermissionOptions,
+                                        container: CKContainer) -> UICloudSharingController
+    {
+        let sharingController = UICloudSharingController(share: share, container: CloudCore.config.container)
+        sharingController.availablePermissions = permissions
+        sharingController.delegate = self
+        
+        return sharingController
+    }
+    
     public func configureSharingController(permissions: UICloudSharingController.PermissionOptions,
                                            completion: @escaping ConfigureSharingCompletionBlock) {
-        
-        func commonConfigure(_ sharingController: UICloudSharingController) {
-            sharingController.availablePermissions = permissions
-            sharingController.delegate = self
-            completion(sharingController)
-        }
-        
-        guard let aRecord = try! object.restoreRecordWithSystemFields(for: .private) else { completion(nil); return }
-        
-        object.fetchShareRecord { share, error in
-            guard error == nil, let share = share else { completion(nil); return }
+        object.fetchShareRecord(in: persistentContainer) { [weak self] share, error in
+            guard let self, error == nil, let share = share else { completion(nil); return }
             
             DispatchQueue.main.async {
-                if share.participants.count > 1 {
-                    let sharingController = UICloudSharingController(share: share, container: CloudCore.config.container)
-                    commonConfigure(sharingController)
-                } else {
-                    let sharingController = UICloudSharingController { _, handler in
-                        let modifyOp = CKModifyRecordsOperation(recordsToSave: [aRecord, share], recordIDsToDelete: nil)
-                        modifyOp.savePolicy = .changedKeys
-                        modifyOp.qualityOfService = .userInitiated
-                        modifyOp.perRecordSaveBlock = { recordID, result in
-                            switch result {
-                            case .success(let record):
-                                if let share = record as? CKShare {
-                                    handler(share, CloudCore.config.container, nil)
-                                }
-                            case .failure(let error):
-                                handler(nil, nil, error)
-                            }
-                        }
-                        CloudCore.config.container.privateCloudDatabase.add(modifyOp)
-                    }
-                    
-                    commonConfigure(sharingController)
-                }
+                let sharingController = self.createSharingController(share: share, permissions: permissions, container: CloudCore.config.container)
+                
+                completion(sharingController)
             }
         }
     }
