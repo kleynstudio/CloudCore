@@ -60,10 +60,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                      userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         let acceptShareOperation = CKAcceptSharesOperation(shareMetadatas: [cloudKitShareMetadata])
         acceptShareOperation.qualityOfService = .userInteractive
-        acceptShareOperation.perShareCompletionBlock = { meta, share, error in
-            CloudCore.pull(rootRecordID: meta.rootRecordID, container: self.persistentContainer, error: nil) { }
+        acceptShareOperation.perShareResultBlock = { meta, result in
+            guard let recordID = meta.hierarchicalRootRecordID else { return }
+            
+            CloudCore.pull(rootRecordID: recordID, container: self.persistentContainer, error: nil) { }
         }
-        acceptShareOperation.acceptSharesCompletionBlock = { error in
+        acceptShareOperation.acceptSharesResultBlock = { result in
             // N/A
         }
         CKContainer(identifier: cloudKitShareMetadata.containerIdentifier).add(acceptShareOperation)
