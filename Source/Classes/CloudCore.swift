@@ -311,4 +311,21 @@ open class CloudCore {
         }
     }
     
+    static public func iCloudAvailable(completion: @escaping ((Bool) -> Void)) {
+        CloudCore.config.container.accountStatus { accountStatus, error in
+            DispatchQueue.main.async {
+                switch accountStatus {
+                case .available:
+                    completion(true)
+                
+                case .couldNotDetermine, .restricted, .noAccount, .temporarilyUnavailable:
+                    completion(false)
+                @unknown default:
+                    completion(false)
+                }
+            }
+        }
+    }
+
+    
 }
