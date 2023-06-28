@@ -39,8 +39,6 @@
 		D9B3C72D1FCEFB4300CDB7FF /* model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D9B3C7291FCEFA9800CDB7FF /* model.xcdatamodeld */; };
 		D9B3C72E1FCEFB4D00CDB7FF /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B3C7271FCEFA6F00CDB7FF /* CoreDataTestCase.swift */; };
 		D9B3C72F1FCEFB5100CDB7FF /* CorrectObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B3C72B1FCEFAB800CDB7FF /* CorrectObject.swift */; };
-		D9B3C7311FCEFC9C00CDB7FF /* CloudCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2E89F1C3A780C00C0327D /* CloudCore.framework */; };
-		D9B3C7341FCEFD9100CDB7FF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B3C7331FCEFD9100CDB7FF /* CloudKit.framework */; };
 		D9B3C7361FCF02F000CDB7FF /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B3C7351FCF02F000CDB7FF /* Helpers.swift */; };
 		D9B3C7391FCF0C9E00CDB7FF /* CorrectObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B3C72B1FCEFAB800CDB7FF /* CorrectObject.swift */; };
 		D9B3C73A1FCF0CA900CDB7FF /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B3C7271FCEFA6F00CDB7FF /* CoreDataTestCase.swift */; };
@@ -63,7 +61,6 @@
 		E29BB21C1E43381D0020F5B6 /* CloudCoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BB21B1E43381D0020F5B6 /* CloudCoreError.swift */; };
 		E29BB2211E4344E80020F5B6 /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BB2201E4344E80020F5B6 /* CKRecord.swift */; };
 		E29BB2231E4346FF0020F5B6 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BB2221E4346FF0020F5B6 /* NSManagedObject.swift */; };
-		E29BB22D1E436F310020F5B6 /* CloudCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2E89F1C3A780C00C0327D /* CloudCore.framework */; };
 		E29BB2351E436F720020F5B6 /* model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E29BB2331E436F720020F5B6 /* model.xcdatamodeld */; };
 		E29BB2371E4377F80020F5B6 /* CoreDataAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BB2361E4377F80020F5B6 /* CoreDataAttribute.swift */; };
 		E29D117A1E69813F00E3DCBF /* CoreDataAttributeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D11791E69813F00E3DCBF /* CoreDataAttributeTests.swift */; };
@@ -98,7 +95,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		245F765CC7CBF0507158B4A9 /* Pods_CloudCoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloudCoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		570D8D22280631F900E6836A /* DeleteCloudCoreZoneOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteCloudCoreZoneOperation.swift; sourceTree = "<group>"; };
 		57505AAF21A7591500D9CF8F /* PullResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullResult.swift; sourceTree = "<group>"; };
 		575ADF442655AB7C0050D693 /* PullRecordOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullRecordOperation.swift; sourceTree = "<group>"; };
@@ -113,8 +109,7 @@
 		5763BF9C280B490200B2CCCD /* CloudCoreCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCoreCacheManager.swift; sourceTree = "<group>"; };
 		5763BF9D280B490200B2CCCD /* CloudCoreCacheable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCoreCacheable.swift; sourceTree = "<group>"; };
 		5763BF9E280B490200B2CCCD /* UploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
-		8EAC4D8B1B0EF4ECE4BDA160 /* Pods_CloudCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloudCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5B2E89F1C3A780C00C0327D /* CloudCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CloudCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B2E89F1C3A780C00C0327D /* CloudCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CloudCore.framework; path = /Users/alex/Developer/Projects/iOS/Packages/CloudCore/build/Debug/CloudCore.framework; sourceTree = "<absolute>"; };
 		D5C6298B1C3A8BBD007F7B7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9089D491FE14E57000FC60C /* SetupOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupOperation.swift; sourceTree = "<group>"; };
 		D97465F71FE319930060EA66 /* CloudCoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudCoreDelegate.swift; sourceTree = "<group>"; };
@@ -124,7 +119,7 @@
 		D985DEA71FE0292000236870 /* SubscribeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeOperation.swift; sourceTree = "<group>"; };
 		D985DEAA1FE0335800236870 /* PushAllLocalDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAllLocalDataOperation.swift; sourceTree = "<group>"; };
 		D985DEAD1FE034A900236870 /* NSManagedObjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectModel.swift; sourceTree = "<group>"; };
-		D9B3C6F31FCEF38D00CDB7FF /* TestableApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestableApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9B3C6F31FCEF38D00CDB7FF /* TestableApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = TestableApp.app; path = /Users/alex/Developer/Projects/iOS/Packages/CloudCore/build/Debug/TestableApp.app; sourceTree = "<absolute>"; };
 		D9B3C6F51FCEF38D00CDB7FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9B3C6F71FCEF38D00CDB7FF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D9B3C6FA1FCEF38D00CDB7FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -132,14 +127,13 @@
 		D9B3C6FF1FCEF38D00CDB7FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9B3C7021FCEF38D00CDB7FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9B3C7041FCEF38D00CDB7FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D9B3C71C1FCEF96D00CDB7FF /* CloudKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CloudKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9B3C71C1FCEF96D00CDB7FF /* CloudKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CloudKitTests.xctest; path = /Users/alex/Developer/Projects/iOS/Packages/CloudCore/build/Debug/CloudKitTests.xctest; sourceTree = "<absolute>"; };
 		D9B3C71E1FCEF96D00CDB7FF /* CloudKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitTests.swift; sourceTree = "<group>"; };
 		D9B3C7201FCEF96D00CDB7FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9B3C7271FCEFA6F00CDB7FF /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		D9B3C72A1FCEFA9800CDB7FF /* model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = model.xcdatamodel; sourceTree = "<group>"; };
 		D9B3C72B1FCEFAB800CDB7FF /* CorrectObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectObject.swift; sourceTree = "<group>"; };
 		D9B3C7321FCEFD8100CDB7FF /* TestableApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestableApp.entitlements; sourceTree = "<group>"; };
-		D9B3C7331FCEFD9100CDB7FF /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D9B3C7351FCF02F000CDB7FF /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		D9B3C73C1FCF0D2700CDB7FF /* CorrectObjectExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectObjectExtension.swift; sourceTree = "<group>"; };
 		E200D44C1E48E13200B707D4 /* CloudCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCore.swift; sourceTree = "<group>"; };
@@ -148,7 +142,6 @@
 		E20A73CB1E68608100A6851A /* RecordToCoreDataOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordToCoreDataOperationTests.swift; sourceTree = "<group>"; };
 		E21FA03D1E4A7E7200B1DAA2 /* RecordToCoreDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordToCoreDataOperation.swift; sourceTree = "<group>"; };
 		E22A53D91E4A8743009286C0 /* CloudKitAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitAttribute.swift; sourceTree = "<group>"; };
-		E22C40441E4291FB009469A1 /* CloudCore.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = CloudCore.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E22C40451E42956C009469A1 /* CoreDataObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataObserver.swift; sourceTree = "<group>"; };
 		E23C478B1E48A404004310F9 /* PushOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationQueue.swift; sourceTree = "<group>"; };
 		E247EF951E67873900EBD75E /* DeleteFromCoreDataOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteFromCoreDataOperationTests.swift; sourceTree = "<group>"; };
@@ -163,7 +156,7 @@
 		E29BB21B1E43381D0020F5B6 /* CloudCoreError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCoreError.swift; sourceTree = "<group>"; };
 		E29BB2201E4344E80020F5B6 /* CKRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKRecord.swift; sourceTree = "<group>"; };
 		E29BB2221E4346FF0020F5B6 /* NSManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
-		E29BB2281E436F310020F5B6 /* CloudCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CloudCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E29BB2281E436F310020F5B6 /* CloudCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CloudCoreTests.xctest; path = /Users/alex/Developer/Projects/iOS/Packages/CloudCore/build/Debug/CloudCoreTests.xctest; sourceTree = "<absolute>"; };
 		E29BB22C1E436F310020F5B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E29BB2341E436F720020F5B6 /* model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = model.xcdatamodel; sourceTree = "<group>"; };
 		E29BB2361E4377F80020F5B6 /* CoreDataAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataAttribute.swift; sourceTree = "<group>"; };
@@ -193,7 +186,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9B3C7341FCEFD9100CDB7FF /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +193,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9B3C7311FCEFC9C00CDB7FF /* CloudCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +200,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E29BB22D1E436F310020F5B6 /* CloudCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,23 +229,9 @@
 		D5B2E8951C3A780C00C0327D = {
 			isa = PBXGroup;
 			children = (
-				D5B2E8A01C3A780C00C0327D /* Products */,
 				D5C629691C3A809D007F7B7C /* Source */,
 				E29BB2291E436F310020F5B6 /* Tests */,
-				E22C40441E4291FB009469A1 /* CloudCore.podspec */,
-				D9B3C7301FCEFC9C00CDB7FF /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		D5B2E8A01C3A780C00C0327D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D5B2E89F1C3A780C00C0327D /* CloudCore.framework */,
-				E29BB2281E436F310020F5B6 /* CloudCoreTests.xctest */,
-				D9B3C6F31FCEF38D00CDB7FF /* TestableApp.app */,
-				D9B3C71C1FCEF96D00CDB7FF /* CloudKitTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		D5C629691C3A809D007F7B7C /* Source */ = {
@@ -330,16 +306,6 @@
 				D9B3C7201FCEF96D00CDB7FF /* Info.plist */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		D9B3C7301FCEFC9C00CDB7FF /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D9B3C7331FCEFD9100CDB7FF /* CloudKit.framework */,
-				8EAC4D8B1B0EF4ECE4BDA160 /* Pods_CloudCore.framework */,
-				245F765CC7CBF0507158B4A9 /* Pods_CloudCoreTests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D9B3C7371FCF0C9200CDB7FF /* Shared */ = {
@@ -686,7 +652,7 @@
 				Base,
 			);
 			mainGroup = D5B2E8951C3A780C00C0327D;
-			productRefGroup = D5B2E8A01C3A780C00C0327D /* Products */;
+			productRefGroup = D5B2E8951C3A780C00C0327D;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
